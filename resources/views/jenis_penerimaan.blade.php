@@ -1,0 +1,159 @@
+@extends('layouts.app2')
+
+@section('head')
+    <!-- DataTables -->
+    <link rel="stylesheet"
+        href="{{ asset('adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+    <style>
+        .example-modal .modal {
+            position: relative;
+            top: auto;
+            bottom: auto;
+            right: auto;
+            left: auto;
+            display: block;
+            z-index: 1;
+        }
+
+        .example-modal .modal {
+            background: transparent !important;
+        }
+
+    </style>
+@endsection
+@section('judul')
+    Master Jenis Penerimaan
+@endsection
+@section('content')
+
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                @if ($message = Session::get('sukses'))
+                    <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong>{{ $message }}</strong>
+                    </div>
+                @endif
+                @if ($message = Session::get('error'))
+                    <div class="alert alert-danger alert-block">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong>{{ $message }}</strong>
+                    </div>
+                @endif
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-default"><i
+                        class="fa fa-plus-circle"></i> Tambah</a>
+                    {{-- <h3 class="box-title">Jenis Pelaporan</h3> --}}
+                </button>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jenis Pelaporan</th>
+                            <th>Deskripsi</th>
+                            <th>Tanggal dibuat</th>
+                            <th>Update Terakhir</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data2 as $index => $penerimaan)
+                            <tr>
+                                <td>{{ ++$index }}</td>
+                                <td>{{ $penerimaan->pelaporan->jenis }}</td>
+                                <td>{{ $penerimaan->jenis }}</td>
+                                <td>{{ \Carbon\Carbon::parse($penerimaan->created_at)->isoFormat('D-M-Y h:mm:ss') }}</td>
+                                <td> {{ \Carbon\Carbon::parse($penerimaan->updated_at)->isoFormat('D-M-Y h:mm:ss') }}
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="/penerimaan/edit/{{ Crypt::encrypt($penerimaan->id) }}"
+                                            class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="bottom"
+                                            title="Ubah">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="/penerimaan/delete/{{ Crypt::encrypt($penerimaan->id) }}"
+                                            class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom"
+                                            title="Hapus">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Tambah Jenis Penerimaan</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/penerimaan/store">
+                        @csrf
+                        <!-- select -->
+                        <div class="form-group">
+                            <label>Jenis Pelaporan</label>
+                            <select class="form-control" name="jenis_pelaporan">
+                                <option value="">Pilih</option>
+                                @foreach ($data as $pelaporan)
+                                    <option value="{{ $pelaporan->id }}">{{ $pelaporan->jenis }}</option>
+                                @endforeach
+                            </select>
+                            @error('jenis_pelaporan')
+                                <span class="invalid-feedback text-red" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Jenis Penerimaan</label>
+                            <input type="text" class="form-control" name="jenis">
+                            @error('jenis')
+                                <span class="invalid-feedback text-red" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                    <button type="Submit" class="btn btn-primary">Simpan</button>
+                </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+@endsection
+@section('plugin')
+    <!-- DataTables -->
+    <script src="{{ asset('adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $(function() {
+            $('#example1').DataTable()
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+        })
+    </script>
+@endsection
