@@ -367,7 +367,7 @@
                                 <input type="file" id="exampleInputFile" name="file_bukti">
                                 <p class="help-block">File yang dapat diupload adalah file jpg/jpeg dengan max file 2MB</p>
 
-                                @error('bukti')
+                                @error('file_bukti')
                                     <span class="invalid-feedback text-red" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
