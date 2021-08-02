@@ -16,10 +16,13 @@
                         <strong>{{ $message }}</strong>
                     </div>
                 @endif
+                @if ($errors->any())
+                    {{ implode('', $errors->all('<div>:message</div>')) }}
+                @endif
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="col-md-6">
-                        <form role="form" action="/pengguna/edit/{{ $data->id }}" method="POST">
+                        <form role="form" action="/pengguna/update/{{ $data->id }}" method="POST">
                             @csrf
                             <!-- text input -->
                             <div class="form-group">
@@ -59,12 +62,12 @@
                         <!-- text input -->
                         <div class="form-group">
                             <label>Level User</label>
-                            <select class="form-control" name="jenis_pelaporan">
+                            <select class="form-control" name="level">
                                 <option value="">Pilih</option>
                                 <option value="0" @if ($data->level == 0) selected @endif>User</option>
                                 <option value="1" @if ($data->level == 1) selected @endif>Admin</option>
                             </select>
-                            @error('jenis_pelaporan')
+                            @error('level')
                                 <span class="invalid-feedback text-red" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

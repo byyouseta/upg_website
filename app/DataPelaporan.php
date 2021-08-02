@@ -34,4 +34,8 @@ class DataPelaporan extends Model
     {
         return $this->belongsTo('App\Peristiwa');
     }
+    public function catatanpelaporan()
+    {
+        return $this->hasMany('App\CatatanPelaporan');
+    }
 }

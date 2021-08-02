@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataPelaporan;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,6 +26,10 @@ class HomeController extends Controller
     {
         session()->put('halaman', 'home');
 
-        return view('home2');
+        $masuk = DataPelaporan::where('status', '=', 0)->count();
+        $proses = DataPelaporan::where('status', '=', 1)->count();
+        $selesai = DataPelaporan::where('status', '=', 2)->count();
+        // dd($masuk, $proses, $selesai);
+        return view('home2', compact('masuk', 'proses', 'selesai'));
     }
 }

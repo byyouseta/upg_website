@@ -28,6 +28,7 @@ class PenerimaanController extends Controller
 
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'jenis_pelaporan' => 'required',
             // 'jenis_penerimaan' => 'required|unique:penerimaans,jenis,except,id',
@@ -35,10 +36,11 @@ class PenerimaanController extends Controller
                 return $query->where('pelaporan_id', $request->jenis_pelaporan);
             }),
         ]);
+        //dd($request->jenis);
 
         $penerimaan = new Penerimaan;
         $penerimaan->pelaporan_id = $request->jenis_pelaporan;
-        $penerimaan->jenis = $request->jenis_penerimaan;
+        $penerimaan->jenis = $request->jenis;
         $penerimaan->save();
 
         return redirect('/penerimaan');

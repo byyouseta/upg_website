@@ -12,7 +12,25 @@
 */
 
 Route::get('/', function () {
-    return view('welcome2');
+    return view('website.about');
+});
+Route::get('/alur', function () {
+    return view('website.alur');
+});
+Route::get('/upg', function () {
+    return view('website.upg');
+});
+Route::get('/faq', function () {
+    return view('website.faq');
+});
+Route::get('/formulir', function () {
+    return view('website.formulir');
+});
+Route::get('/film', function () {
+    return view('website.video');
+});
+Route::get('/kontak', function () {
+    return view('website.kontak');
 });
 
 Auth::routes();
@@ -30,35 +48,39 @@ Route::get('/history/pelaporan', 'PelaporController@history');
 //ajax
 Route::post('/getPenerimaan', 'PelaporController@getPenerimaan')->name('getPenerimaan');
 
-//Laporan
-Route::get('/laporan', 'LaporanController@index')->name('laporan');
-Route::get('/laporan/masuk', 'LaporanController@masuk');
-Route::get('/laporan/proses', 'LaporanController@proses');
-Route::get('/laporan/selesai', 'LaporanController@selesai');
-Route::get('/laporan/detail/{id}', 'LaporanController@detail');
-Route::get('/laporan/bukti/{id}', 'LaporanController@bukti');
+Route::middleware('cekstatus')->group(function () {
+    //Laporan
+    Route::get('/laporan', 'LaporanController@index')->name('laporan');
+    Route::get('/laporan/masuk', 'LaporanController@masuk');
+    Route::get('/laporan/proses', 'LaporanController@proses');
+    Route::get('/laporan/selesai', 'LaporanController@selesai');
+    Route::get('/laporan/detail/{id}', 'LaporanController@detail');
+    Route::get('/laporan/bukti/{id}', 'LaporanController@bukti');
+    //Catatan
+    Route::post('/catatan/{id}', 'CatatanController@store');
 
-//Pengguna
-Route::get('/pengguna', 'PenggunaController@index')->name('pengguna');
-Route::get('/pengguna/edit/{id}', 'PenggunaController@edit');
-Route::post('/pengguna/update/{id}', 'PenggunaController@update');
-Route::get('/pengguna/delete/{id}', 'PenggunaController@delete');
+    //Pengguna
+    Route::get('/pengguna', 'PenggunaController@index')->name('pengguna');
+    Route::get('/pengguna/edit/{id}', 'PenggunaController@edit');
+    Route::post('/pengguna/update/{id}', 'PenggunaController@update');
+    Route::get('/pengguna/delete/{id}', 'PenggunaController@delete');
 
-//MasterdataPelaporan
-Route::get('/pelaporan', 'PelaporanController@index');
-Route::post('/pelaporan/store', 'PelaporanController@store');
-Route::get('/pelaporan/edit/{id}', 'PelaporanController@edit');
-Route::post('/pelaporan/update/{id}', 'PelaporanController@update');
-Route::get('/pelaporan/delete/{id}', 'PelaporanController@delete');
-//MasterdataPenerimaan
-Route::get('/penerimaan', 'PenerimaanController@index');
-Route::post('/penerimaan/store', 'PenerimaanController@store');
-Route::get('/penerimaan/edit/{id}', 'PenerimaanController@edit');
-Route::post('/penerimaan/update/{id}', 'PenerimaanController@update');
-Route::get('/penerimaan/delete/{id}', 'PenerimaanController@delete');
-//MasterdataPeristiwa
-Route::get('/peristiwa', 'PeristiwaController@index');
-Route::post('/peristiwa/store', 'PeristiwaController@store');
-Route::get('/peristiwa/edit/{id}', 'PeristiwaController@edit');
-Route::post('/peristiwa/update/{id}', 'PeristiwaController@update');
-Route::get('/peristiwa/delete/{id}', 'PeristiwaController@delete');
+    //MasterdataPelaporan
+    Route::get('/pelaporan', 'PelaporanController@index');
+    Route::post('/pelaporan/store', 'PelaporanController@store');
+    Route::get('/pelaporan/edit/{id}', 'PelaporanController@edit');
+    Route::post('/pelaporan/update/{id}', 'PelaporanController@update');
+    Route::get('/pelaporan/delete/{id}', 'PelaporanController@delete');
+    //MasterdataPenerimaan
+    Route::get('/penerimaan', 'PenerimaanController@index');
+    Route::post('/penerimaan/store', 'PenerimaanController@store');
+    Route::get('/penerimaan/edit/{id}', 'PenerimaanController@edit');
+    Route::post('/penerimaan/update/{id}', 'PenerimaanController@update');
+    Route::get('/penerimaan/delete/{id}', 'PenerimaanController@delete');
+    //MasterdataPeristiwa
+    Route::get('/peristiwa', 'PeristiwaController@index');
+    Route::post('/peristiwa/store', 'PeristiwaController@store');
+    Route::get('/peristiwa/edit/{id}', 'PeristiwaController@edit');
+    Route::post('/peristiwa/update/{id}', 'PeristiwaController@update');
+    Route::get('/peristiwa/delete/{id}', 'PeristiwaController@delete');
+});

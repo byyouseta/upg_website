@@ -83,6 +83,7 @@
                                         </span>
                                     @enderror
                                 </div>
+
                         </div>
                         <div class="col-md-6">
                             <!-- text input -->
@@ -145,6 +146,7 @@
                                     </span>
                                 @enderror
                             </div>
+                            {{-- <button type="button" id="tab_2" class="btn btn-primary btn-sm pull-right">Selanjutnya</button> --}}
                         </div>
                     </div>
                 </div>

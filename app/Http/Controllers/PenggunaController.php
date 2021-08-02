@@ -40,13 +40,15 @@ class PenggunaController extends Controller
         $this->validate($request, [
             'nama' => 'required',
             'alamat' => 'required',
-            'nohp' => 'required|unique:users,nohp,except,' . $id,
+            'nohp' => 'required|unique:users,nohp,' . $id,
+            'level' => 'required',
         ]);
 
         $user = User::find($id);
-        $user->nama = $request->nama;
+        $user->name = $request->nama;
         $user->nohp = $request->nohp;
         $user->alamat = $request->alamat;
+        $user->level = $request->level;
         $user->save();
 
         $request->session()->flash('sukses', 'Data berhasil diupdate');

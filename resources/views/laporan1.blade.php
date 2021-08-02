@@ -37,7 +37,15 @@
                                 <td>{{ $laporan->user->name }}
                                 </td>
                                 <td>{{ $laporan->created_at }}</td>
-                                <td>{{ $laporan->status }}</td>
+                                <td>
+                                    @if ($laporan->status == 0)
+                                        <span class="label label-danger"> Pelaporan </span>
+                                    @elseif($laporan->status == 1)
+                                        <span class="label label-warning">Ditangani</span>
+                                    @else
+                                        <span class="label label-success">Selesai</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="btn-group">
                                         <a href="/laporan/detail/{{ Crypt::encrypt($laporan->id) }}"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CatatanPelaporan;
 use Illuminate\Http\Request;
 use App\DataPelaporan;
 use Illuminate\Support\Facades\Crypt;
@@ -59,9 +60,13 @@ class LaporanController extends Controller
         $id = Crypt::decrypt($id);
 
         $data = DataPelaporan::find($id);
+        $data2 = CatatanPelaporan::where('data_pelaporan_id', '=', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         return view('detail_laporan', [
-            'data' => $data
+            'data' => $data,
+            'data2' => $data2
         ]);
     }
 
