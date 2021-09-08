@@ -20,69 +20,20 @@
                             <td>{{ $data->id }}</td>
                             <th>Nama Pembuat</th>
                             <td>{{ $data->user->name }}</td>
-                            <th>Dilaporkan Pada</th>
-                            <td>{{ $data->created_at }}</td>
+
                         </tr>
                         <tr>
                             <th>Jenis Pelaporan</th>
                             <td>{{ $data->pelaporan->jenis }}</td>
 
-                            <th>Jenis Penerimaan</th>
-                            <td>{{ $data->penerimaan->jenis }}</td>
-                            <th>Peristiwa Penerimaan</th>
-                            <td>{{ $data->peristiwa->nama }}</td>
+                            <th>Dilaporkan Pada</th>
+                            <td>{{ $data->created_at }}</td>
                         </tr>
-                        <tr>
-                            <th>NIK</th>
-                            <td>{{ $data->ktp }}</td>
-                            <th>Nama Instansi</th>
-                            <td>{{ $data->instansi }}</td>
-                            <th>Unit Kerja</th>
-                            <td>{{ $data->unit }}</td>
-                        </tr>
-                        <tr>
-                            <th>Alamat Instansi</th>
-                            <td>{{ $data->alamat_kantor }}</td>
-                            <th>Telepon Instansi</th>
-                            <td>{{ $data->telp_kantor }}</td>
-                            <th>No Telp/HP</th>
-                            <td>{{ $data->user->nohp }}</td>
-                        </tr>
-                        <tr>
-                            <th>Nama Pemberi</th>
-                            <td>{{ $data->nama_pemberi }}</td>
-                            <th>Alamat Pemberi</th>
-                            <td>{{ $data->alamat_pemberi }}</td>
-                            <th>Hubungan</th>
-                            <td>{{ $data->hubungan }}</td>
-                        </tr>
-                        <tr>
-                            <th>Nilai Taksiran</th>
-                            <td>@currency($data->nilai)</td>
-                            <th>Tempat Penerimaan</th>
-                            <td>{{ $data->tempat_terima }}</td>
-                            <th>Tanggal Penerimaan</th>
-                            <td>{{ $data->tgl_terima }}</td>
-                        </tr>
-                        <tr>
-                            <th>Alasan pemberian </th>
-                            <td colspan="5">{{ $data->alasan }}</td>
-                        </tr>
-                        <tr>
-                            <th>Kronologi Penerimaan </th>
-                            <td colspan="5">{{ $data->kronologi }}</td>
-                        </tr>
-                        <tr>
-                            <th>File (Jika Ada) </th>
-                            <td colspan="5">
-                                @if (!empty($data->file_bukti))
-                                    <a href="/laporan/bukti/{{ $data->file_bukti }}" target="new_tab"> <span
-                                            class="label label-success">Lihat File</span></a>
-                                @else
-                                    <span class="label label-default">Tidak ada file</span>
-                                @endif
 
-                            </td>
+                        <tr>
+                            <th>File Pelaporan Manual </th>
+                            <td colspan="5"><a href="/lapor/manual/lihat/{{ $data->file }}" target="new_tab"> <span
+                                        class="label label-success">Lihat File</span></a></td>
                         </tr>
                         <tr>
                             <th>Status Akhir</th>
@@ -145,7 +96,7 @@
                                     <span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">Set Status Pelaporan</h4>
                             </div>
-                            <form action="/catatan/{{ $data->id }}" method="POST">
+                            <form action="/catatan/manual/{{ $data->id }}" method="POST">
                                 @csrf
                                 <div class="modal-body">
                                     <div class="form-group">
@@ -212,7 +163,7 @@
                                         </tr>
                                         <tr>
                                             <th> No NIK </th>
-                                            <td>{{ $data->ktp }}</td>
+                                            <td>{{ $data->user->nik }}</td>
                                         </tr>
                                         <tr>
                                             <th> Terakhir Update </th>

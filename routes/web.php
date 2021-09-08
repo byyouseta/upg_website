@@ -23,9 +23,11 @@ Route::get('/upg', function () {
 Route::get('/faq', function () {
     return view('website.faq');
 });
-Route::get('/formulir', function () {
-    return view('website.formulir');
-});
+// Route::get('/formulir', function () {
+//     return view('website.formulir');
+// });
+Route::get('/formulir', 'WebController@formulir');
+Route::get('/formulir/unduh/{id}', 'WebController@lihat');
 Route::get('/film', function () {
     return view('website.video');
 });
@@ -45,6 +47,10 @@ Route::get('/lapor', 'PelaporController@lapor');
 Route::post('/lapor/store', 'PelaporController@store');
 Route::get('/lapor/detail/{id}', 'PelaporController@detaillapor');
 Route::get('/history/pelaporan', 'PelaporController@history');
+Route::get('/lapor/manual', 'PelaporController@manual');
+Route::post('/lapor/manual/store', 'PelaporController@manualstore');
+Route::get('/lapor/manual/detail/{id}', 'PelaporController@detailmanual');
+Route::get('/lapor/manual/lihat/{id}', 'PelaporController@view');
 //ajax
 Route::post('/getPenerimaan', 'PelaporController@getPenerimaan')->name('getPenerimaan');
 
@@ -55,9 +61,12 @@ Route::middleware('cekstatus')->group(function () {
     Route::get('/laporan/proses', 'LaporanController@proses');
     Route::get('/laporan/selesai', 'LaporanController@selesai');
     Route::get('/laporan/detail/{id}', 'LaporanController@detail');
+    Route::get('/laporan/manual/detail/{id}', 'LaporanController@detailmanual');
     Route::get('/laporan/bukti/{id}', 'LaporanController@bukti');
     //Catatan
     Route::post('/catatan/{id}', 'CatatanController@store');
+    //Catatan Manual
+    Route::post('/catatan/manual/{id}', 'CatatanController@manualstore');
 
     //Pengguna
     Route::get('/pengguna', 'PenggunaController@index')->name('pengguna');
@@ -83,4 +92,10 @@ Route::middleware('cekstatus')->group(function () {
     Route::get('/peristiwa/edit/{id}', 'PeristiwaController@edit');
     Route::post('/peristiwa/update/{id}', 'PeristiwaController@update');
     Route::get('/peristiwa/delete/{id}', 'PeristiwaController@delete');
+
+    //upload dokument
+    Route::post('/dokumen/upload', 'DokumenController@upload');
+    Route::get('/dokumen', 'DokumenController@index');
+    Route::get('/dokumen/lihat/{id}', 'DokumenController@lihat');
+    Route::get('/dokumen/hapus/{id}', 'DokumenController@delete');
 });

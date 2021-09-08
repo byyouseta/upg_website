@@ -47,7 +47,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Nama Instansi</label>
-                                    <input type="text" class="form-control" name="instansi" value="{{ old('instansi') }}">
+                                    <input type="text" class="form-control" name="instansi"
+                                        value="{{ old('instansi') }}">
                                     @error('instansi')
                                         <span class="invalid-feedback text-red" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -89,7 +90,8 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <label>No.KTP (NIK)</label>
-                                <input type="text" class="form-control" value="{{ old('ktp') }}" name="ktp">
+                                <input type="text" class="form-control" value="{{ Auth::user()->nik }}" name="ktp"
+                                    readonly>
                                 @error('ktp')
                                     <span class="invalid-feedback text-red" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -216,8 +218,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Tanggal Penerimaan</label>
-                                <input type="text" class="form-control" value="{{ old('tgl_terima') }}" name="tgl_terima"
-                                    id="datepicker2">
+                                <input type="text" class="form-control" value="{{ old('tgl_terima') }}"
+                                    name="tgl_terima" id="datepicker2">
                                 @error('tgl_terima')
                                     <span class="invalid-feedback text-red" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -303,7 +305,8 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <label>Pekerjaan/Jabatan</label>
-                                <input type="text" class="form-control" value="{{ old('pekerjaan') }}" name="pekerjaan">
+                                <input type="text" class="form-control" value="{{ old('pekerjaan') }}"
+                                    name="pekerjaan">
                                 @error('pekerjaan')
                                     <span class="invalid-feedback text-red" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -353,8 +356,8 @@
                                 <label>Dokumen yang dilampirkan</label>
                                 <select class="form-control" name="dokumen">
                                     <option value="">Pilih Bukti/Dokumen yang dilampirkan</option>
-                                    <option value="Tidak Ada">Tidak Ada</option>
-                                    <option value="Ada">Ada</option>
+                                    <option value="Tidak Ada" @if (old('dokumen') == 'Tidak Ada') selected @endif>Tidak Ada</option>
+                                    <option value="Ada" @if (old('dokumen') == 'Ada') selected @endif>Ada</option>
                                 </select>
                                 @error('dokumen')
                                     <span class="invalid-feedback text-red" role="alert">
@@ -365,7 +368,8 @@
                             <div class="form-group">
                                 <label>Upload Dokumen / Bukti (Jika Ada) </label>
                                 <input type="file" id="exampleInputFile" name="file_bukti">
-                                <p class="help-block">File yang dapat diupload adalah file jpg/jpeg dengan max file 2MB</p>
+                                <p class="help-block">File yang dapat diupload adalah file jpg/jpeg dengan max file 2MB
+                                </p>
 
                                 @error('file_bukti')
                                     <span class="invalid-feedback text-red" role="alert">

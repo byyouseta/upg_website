@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($data as $laporan)
+                        @foreach ($data as $laporan)
                             <tr>
                                 <td>{{ $laporan->id }}</td>
                                 <td>{{ $laporan->user->name }}
@@ -56,11 +56,33 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
+                        @endforeach
+                        @foreach ($data2 as $manual)
                             <tr>
-                                <td colspan="5" class="text-center">Maaf Data Kosong</td>
+                                <td>{{ $manual->id }}</td>
+                                <td>{{ $manual->user->name }}
+                                </td>
+                                <td>{{ $manual->created_at }}</td>
+                                <td>
+                                    @if ($manual->status == 0)
+                                        <span class="label label-danger"> Pelaporan </span>
+                                    @elseif($manual->status == 1)
+                                        <span class="label label-warning">Ditangani</span>
+                                    @else
+                                        <span class="label label-success">Selesai</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="/laporan/manual/detail/{{ Crypt::encrypt($manual->id) }}"
+                                            class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="bottom"
+                                            title="Detail Laporan">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </td>
                             </tr>
-                        @endforelse
+                        @endforeach
                 </table>
             </div>
             <!-- /.box-body -->
@@ -70,20 +92,20 @@
 
 @endsection
 @section('plugin')
-<!-- DataTables -->
-<script src="{{ asset('adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script>
-    $(function() {
-        $('#example1').DataTable()
-        $('#example2').DataTable({
-            'paging': true,
-            'lengthChange': false,
-            'searching': true,
-            'ordering': true,
-            'info': true,
-            'autoWidth': false
+    <!-- DataTables -->
+    <script src="{{ asset('adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $(function() {
+            $('#example1').DataTable()
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
         })
-    })
-</script>
+    </script>
 @endsection

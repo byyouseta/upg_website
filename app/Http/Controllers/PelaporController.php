@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\CatatanPelaporan;
+use App\CatatanPelaporanManual;
 use App\Pelaporan;
 use App\Penerimaan;
 use App\Peristiwa;
 use App\User;
 use App\DataPelaporan;
+use App\ManualPelaporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -34,11 +37,13 @@ class PelaporController extends Controller
         $this->validate($request, [
             'nama' => 'required',
             'nohp' => 'required|unique:users,nohp,' . $id,
+            'nik' => 'required|unique:users,nik,' . $id,
         ]);
         $update = User::find($id);
         $update->name = $request->nama;
         $update->alamat = $request->alamat;
         $update->nohp = $request->nohp;
+        $update->nik = $request->nik;
         $update->save();
 
         Session::flash('sukses', 'Data berhasil diperbaharui');
@@ -104,6 +109,7 @@ class PelaporController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->ktp);
         $this->validate($request, [
             //pelapor
             //'nama' => 'required',
@@ -112,7 +118,7 @@ class PelaporController extends Controller
             'jabatan' => 'required',
             'alamat_kantor' => 'required',
             'telp_kantor' => 'required',
-            'ktp'   => 'required',
+            'ktp' => 'required',
             'tgl_lahir' => 'required',
             'unit' => 'required',
             //'email' => 'required|email',
@@ -138,27 +144,31 @@ class PelaporController extends Controller
             'alasan' => 'required',
             'dokumen' => 'required',
             'kronologi' => 'required',
-            'catatan' => 'required',
-            'file_bukti' => 'required|mimes:jpeg,jpg|max:2048',
+            //'catatan' => 'required',
+            'file_bukti' => 'mimes:jpeg,jpg|max:2048',
 
         ]);
-
-        // menyimpan data file yang diupload ke variabel $file
-        $file = $request->file('file_bukti');
-        $random = Str::random(12);
-        $extension = $file->getClientOriginalExtension();
-        $nama_file = time() . "_" . $random . '.' . $extension;
-
-        // isi dengan nama folder tempat kemana file diupload
-        $tujuan_upload = 'bukti';
-        $file->move($tujuan_upload, $nama_file);
 
         //ubah tanggal
         $tgl_lahir = \Carbon\Carbon::parse($request->tgl_lahir)->format('Y-m-d');
         $tgl_terima = \Carbon\Carbon::parse($request->tgl_terima)->format('Y-m-d');
 
         $lapor = new DataPelaporan;
-        $lapor->file_bukti = $nama_file;
+
+        if (!empty($request->file_bukti)) {
+            // menyimpan data file yang diupload ke variabel $file
+            $file = $request->file('file_bukti');
+            $random = Str::random(12);
+            $extension = $file->getClientOriginalExtension();
+            $nama_file = time() . "_" . $random . '.' . $extension;
+
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'bukti';
+            $file->move($tujuan_upload, $nama_file);
+
+            $lapor->file_bukti = $nama_file;
+        }
+
         $lapor->user_id = Auth::user()->id;
         $lapor->tempat_lahir = $request->tempat_lahir;
         $lapor->instansi = $request->instansi;
@@ -187,7 +197,14 @@ class PelaporController extends Controller
         $lapor->kronologi = $request->kronologi;
         $lapor->catatan = $request->catatan;
         $lapor->status = 0;
+
         $lapor->save();
+
+        $catatan = new CatatanPelaporan;
+        $catatan->status = 0;
+        $lapor->catatanpelaporan()->save($catatan);
+
+
 
         return redirect("/history/pelaporan");
     }
@@ -197,8 +214,12 @@ class PelaporController extends Controller
         session()->put('halaman', 'history_laporan');
 
         $data = DataPelaporan::where('user_id', '=', Auth::user()->id)->get();
+        $data2 = ManualPelaporan::where('user_id', '=', Auth::user()->id)->get();
         // dd($data);
-        return view('history_laporan', ['data' => $data]);
+        return view('history_laporan', [
+            'data' => $data,
+            'data2' => $data2,
+        ]);
     }
 
     public function detaillapor($id)
@@ -206,7 +227,77 @@ class PelaporController extends Controller
         $id = Crypt::decrypt($id);
 
         $data = DataPelaporan::find($id);
+        $data2 = CatatanPelaporan::where('data_pelaporan_id', '=', $id)->orderBy('created_at', 'desc')->first();
         //dd($data);
-        return view('detail_lapor', ['data' => $data]);
+        return view('detail_lapor', [
+            'data' => $data,
+            'data2' => $data2
+        ]);
+    }
+
+    public function manual()
+    {
+        session()->put('halaman', 'lapor');
+
+        $data = Pelaporan::all();
+        return view('unggah', compact('data'));
+    }
+
+    public function manualstore(Request $request)
+    {
+        $this->validate($request, [
+            'jenis_pelaporan' => 'required',
+            'file' => 'required|mimes:pdf|max:2048',
+        ]);
+
+        // menyimpan data file yang diupload ke variabel $file
+        $file = $request->file('file');
+        $random = Str::random(6);
+        $extension = $file->getClientOriginalExtension();
+        $nama_file = time() . "_" . $random . '.' . $extension;
+
+        // isi dengan nama folder tempat kemana file diupload
+        $tujuan_upload = 'pelaporan';
+        $file->move($tujuan_upload, $nama_file);
+
+        $manual = new ManualPelaporan;
+        $manual->user_id = Auth::user()->id;
+        $manual->pelaporan_id = $request->jenis_pelaporan;
+        $manual->file = $nama_file;
+        $manual->status = 0;
+        $manual->save();
+
+        $catatan = new CatatanPelaporanManual;
+        $catatan->status = 0;
+        $manual->catatanpelaporanmanual()->save($catatan);
+
+        $request->session()->flash('sukses', 'Data berhasil disimpan');
+
+        return redirect('/lapor/manual');
+    }
+
+    public function detailmanual($id)
+    {
+        $id = Crypt::decrypt($id);
+
+        $data = ManualPelaporan::find($id);
+        $data2 = CatatanPelaporanManual::where('manual_pelaporan_id', '=', $id)->orderBy('created_at', 'desc')->first();
+        //dd($data);
+        return view('detail_manuallapor', [
+            'data' => $data,
+            'data2' => $data2,
+        ]);
+    }
+
+    public function view($file)
+    {
+
+        //$file = Crypt::decrypt($file);
+        // Force download of the file
+        $this->file_to_download   = 'pelaporan/' . $file;
+        //return response()->streamDownload(function () {
+        //    echo file_get_contents($this->file_to_download);
+        //}, $file.'.pdf');
+        return response()->file($this->file_to_download);
     }
 }

@@ -24,4 +24,9 @@ class Pelaporan extends Model
     {
         return $this->hasMany('App\DataPelaporan');
     }
+
+    public function manualpelaporan()
+    {
+        return $this->hasMany('App\ManualPelaporan');
+    }
 }

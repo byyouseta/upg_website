@@ -21,7 +21,7 @@
                 </a>
             </li>
             @if (Auth::user()->level == 1)
-                <li class=" @if (session('halaman')=='pelaporan' ) active @endif">
+                <li class=" @if (session('halaman') == 'pelaporan') active @endif">
                     <a href="/laporan">
                         <i class="fa fa-gears"></i>
                         <span>Pengaturan Pelaporan</span>
@@ -40,7 +40,7 @@
                         <i class="fa fa-users"></i> <span>Pengaturan User</span>
                     </a>
                 </li>
-                <li class="treeview @if (session('halaman')=='master' ) active @endif">
+                <li class="treeview @if (session('halaman') == 'master') active @endif">
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Master Data Pelaporan</span>
@@ -54,14 +54,20 @@
                         <li><a href="/peristiwa"><i class="fa fa-plus"></i> Tambah Kode Peristiwa</a></li>
                     </ul>
                 </li>
-                <li @if (session('halaman') == 'history') class="active" @endif>
+                {{-- <li @if (session('halaman') == 'history') class="active" @endif>
                     <a href="#">
                         <i class="fa fa-history"></i> <span>History Login Pengguna</span>
 
                     </a>
+                </li> --}}
+                <li @if (session('halaman') == 'dokumen') class="active" @endif>
+                    <a href="/dokumen">
+                        <i class="fa fa-book"></i> <span>Data Dokumen</span>
+
+                    </a>
                 </li>
             @else
-                <li class="treeview @if (session('halaman')=='pengaturan_pengguna' ) active @endif">
+                <li class="treeview @if (session('halaman') == 'pengaturan_pengguna') active @endif">
                     <a href="#">
                         <i class="fa fa-gears"></i>
                         <span>Pengaturan Pengguna</span>
@@ -74,10 +80,24 @@
                         <li><a href="/password"><i class="fa fa-key"></i> Ubah Password</a></li>
                     </ul>
                 </li>
-                <li @if (session('halaman') == 'lapor') class="active" @endif>
-                    <a href="/lapor">
-                        <i class="fa fa-book"></i> <span>Buat Pelaporan Gratifikasi</span>
+                <li class="treeview @if (session('halaman') == 'lapor') active @endif">
+                    <a href="#">
+                        <i class="fa fa-gears"></i>
+                        <span>Buat pelaporan</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/lapor">
+                                <i class="fa fa-book"></i> <span>Buat Pelaporan On-line</span>
+                            </a>
+                        </li>
+                        <li><a href="/lapor/manual">
+                                <i class="fa fa-book"></i> <span>Upload Pelaporan</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li @if (session('halaman') == 'history_laporan') class="active" @endif>
                     <a href="/history/pelaporan">

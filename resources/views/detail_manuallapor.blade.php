@@ -24,25 +24,12 @@
                         <tr>
                             <th>Jenis Pelaporan</th>
                             <td>{{ $data->pelaporan->jenis }}</td>
-                            <th>Jenis Penerimaan</th>
-                            <td>{{ $data->penerimaan->jenis }}</td>
+                            <th>Lihat File Pelaporan</th>
+                            <td><a href="/lapor/manual/lihat/{{ $data->file }}" target="new_tab"><span
+                                        class="label label-success">Lihat File</span></a>
+                            </td>
                         </tr>
-                        <tr>
-                            <th>Jenis Peristiwa Penerimaan</th>
-                            <td>{{ $data->peristiwa->nama }}</td>
-                            <th>Pemberi Gratifikasi</th>
-                            <td>{{ $data->nama_pemberi }}</td>
-                        </tr>
-                        <tr>
-                            <th>Nilai /Harga Taksiran</th>
-                            <td>{{ $data->nilai }}</td>
-                            <th>Dokumen yang dilampirkan</th>
-                            <td>{{ $data->dokumen }}</td>
-                        </tr>
-                        <tr>
-                            <th>Uraian </th>
-                            <td colspan="3">{{ $data->uraian_peristiwa }}</td>
-                        </tr>
+
                         <tr>
                             <th>Balasan </th>
                             <td colspan="3"></td>
@@ -73,8 +60,6 @@
                                 @endif
                             </td>
                         </tr>
-
-
                     </table>
                 </div>
                 <!-- /.box-body -->

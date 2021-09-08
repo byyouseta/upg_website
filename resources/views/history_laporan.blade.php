@@ -29,7 +29,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($data as $index => $lapor)
+                        @foreach ($data as $index => $lapor)
                             <tr>
                                 <td>{{ $lapor->id }}</td>
                                 <td>{{ $lapor->pelaporan->jenis }}</td>
@@ -56,11 +56,35 @@
                                 </td>
 
                             </tr>
-                        @empty
+
+                        @endforeach
+                        @foreach ($data2 as $index => $lapor)
                             <tr>
-                                <td colspan="5">Data Pengajuan Kosong</td>
+                                <td>{{ $lapor->id }}</td>
+                                <td>{{ $lapor->pelaporan->jenis }}</td>
+                                <td>{{ \Carbon\Carbon::parse($lapor->created_at)->isoFormat('D-M-Y h:mm:ss') }}
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($lapor->updated_at)->isoFormat('D-M-Y h:mm:ss') }}</td>
+                                <td>
+                                    @if ($lapor->status == 0)
+                                        <span class="label label-danger"> Pelaporan </span>
+                                    @elseif($lapor->status == 1)
+                                        <span class="label label-warning">Ditangani</span>
+                                    @else
+                                        <span class="label label-success">Selesai</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="/lapor/manual/detail/{{ Crypt::encrypt($lapor->id) }}"
+                                            class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="bottom"
+                                            title="Detail Laporan">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </td>
                             </tr>
-                        @endforelse
+                        @endforeach
                 </table>
             </div>
             <!-- /.box-body -->
@@ -69,20 +93,20 @@
     </div>
 @endsection
 @section('plugin')
-<!-- DataTables -->
-<script src="{{ asset('adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script>
-    $(function() {
-        $('#example1').DataTable()
-        $('#example2').DataTable({
-            'paging': true,
-            'lengthChange': false,
-            'searching': true,
-            'ordering': true,
-            'info': true,
-            'autoWidth': false
+    <!-- DataTables -->
+    <script src="{{ asset('adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $(function() {
+            $('#example1').DataTable()
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
         })
-    })
-</script>
+    </script>
 @endsection

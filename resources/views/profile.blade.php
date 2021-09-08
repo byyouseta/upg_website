@@ -56,6 +56,16 @@
                     </div>
                     <div class="col-md-6">
                         <!-- text input -->
+
+                        <div class="form-group">
+                            <label>NIK</label>
+                            <input type="text" class="form-control" value="{{ Auth::user()->nik }}" name="nik">
+                            @error('nik')
+                                <span class="invalid-feedback text-red" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
                         <div class="form-group">
                             <label>Email Pengguna</label>
                             <input type="text" class="form-control" value="{{ Auth::user()->email }}" disabled>

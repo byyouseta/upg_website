@@ -20,10 +20,10 @@
         <div class="container">
             <div class="row content">
                 <div class="col-lg-12">
-                    <h4>
-                        Download Formulir Laporan Gratifikasi
-                    </h4>
-                    <ul>
+                    {{-- <h4>
+                        Download Formulir
+                    </h4> --}}
+                    {{-- <ul>
                         <li><i class="ri-check-double-line"></i>
                             Formulir Laporan Gratifikasi disini!
                         </li>
@@ -32,7 +32,30 @@
                         </li>
                     </ul>
                     <p>Contoh Laporan Gratifikasi Pernikahan disini!</p>
-                    <p>Contoh Laporan Gratifikasi Non Pernikahan disini!</p>
+                    <p>Contoh Laporan Gratifikasi Non Pernikahan disini!</p> --}}
+                    <table class="table table-hover" style="width: 100%">
+                        <thead>
+                            <tr>
+                                {{-- <th scope="col">#</th> --}}
+                                <th scope="col">Nama Formulir</th>
+                                <th scope="col">Keterangan</th>
+                                <th scope="col" class="text-center">Unduh</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data as $dokumen)
+                                <tr>
+                                    {{-- <th scope="row">1</th> --}}
+                                    <td>{{ $dokumen->nama }}</td>
+                                    <td>{{ $dokumen->keterangan }}</td>
+                                    <td class="text-center"><a href="/formulir/unduh/{{ $dokumen->file }}"
+                                            target="new_tab">
+                                            <i class="icofont-download"></i> </a></td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

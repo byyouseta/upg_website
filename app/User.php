@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'nohp', 'alamat', 'level',
+        'name', 'email', 'password', 'nohp', 'alamat', 'level', 'nik',
     ];
 
     /**
@@ -43,6 +43,11 @@ class User extends Authenticatable
 
     public function datapelaporan()
     {
-        return $this->hasMany('App\Datapelaporan');
+        return $this->hasMany('App\DataPelaporan');
+    }
+
+    public function manualpelaporan()
+    {
+        return $this->hasMany('App\ManualPelaporan');
     }
 }
